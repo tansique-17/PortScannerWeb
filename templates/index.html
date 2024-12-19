@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Scanner</title>
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/originals/be/92/f5/be92f51ef908d53c0c74d5e06a59365e.gif');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 1200px;
+            flex-wrap: wrap;
+        }
+
+        .form-container, .results-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        input[type="text"], input[type="number"], input[type="submit"] {
+            padding: 15px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: 2px solid #4CAF50;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        table, th, td {
+            border: 2px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #444;
+        }
+
+        tr:nth-child(even) {
+            background-color: #555;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid transparent;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .scan-results {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Port Scanner</h1>
+            <form id="scanForm" method="POST" action="/scan">
+                <label for="target">Target (IP/URL):</label>
+                <input type="text" id="target" name="target" required><br><br>
+
+                <label for="start_port">Start Port:</label>
+                <input type="number" id="start_port" name="start_port" value="1"><br><br>
+
+                <label for="end_port">End Port:</label>
+                <input type="number" id="end_port" name="end_port" value="1024"><br><br>
+
+                <input type="submit" value="Start Scan">
+            </form>
+        </div>
+        
+        <div class="results-container">
+            <h2 class="scan-results">Scan Results for {{ target }}</h2>
+            
+            <p id="errorMessage" class="error-message">{{ error_message }}</p>
+
+            <!-- Spinner to show while scanning -->
+            <div class="spinner" id="spinner"></div>
+
+            <!-- Table to show scan results -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Port</th>
+                        <th>Status</th>
+                        <th>Service</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for port, status, service in results %}
+                    <tr>
+                        <td>{{ port }}</td>
+                        <td>{{ status }}</td>
+                        <td>{{ service }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Show spinner while scanning
+        document.getElementById('scanForm').addEventListener('submit', function() {
+            document.getElementById('spinner').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

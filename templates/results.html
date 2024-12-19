@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Scan Results</title>
+</head>
+<body>
+    <h1>Port Scan Results for {{ target }}</h1>
+    
+    {% if results %}
+        <table border="1">
+            <tr>
+                <th>Port</th>
+                <th>Status</th>
+                <th>Service</th>
+            </tr>
+            {% for result in results %}
+            <tr>
+                <td>{{ result['port'] }}</td>
+                <td>{{ result['status'] }}</td>
+                <td>{{ result['service'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No open ports found.</p>
+    {% endif %}
+    
+    <a href="/">Back to Scan</a>
+</body>
+</html>
