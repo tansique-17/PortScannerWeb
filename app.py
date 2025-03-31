@@ -2,8 +2,12 @@ import socket
 import re
 from flask import Flask, render_template, request
 from concurrent.futures import ThreadPoolExecutor
+from flask_frozen import Freezer
 
 app = Flask(__name__)
+freezer = Freezer(app)
+
+
 
 # Function to validate input (check if it's an IP or URL)
 def validate_input(input_data):
@@ -45,9 +49,9 @@ def scan_ports(host, start_port, end_port):
     return results
 
 # Route to display the form (home page)
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 # Route to start the port scan and return results
 @app.route('/scan', methods=['POST'])
@@ -71,5 +75,7 @@ def start_scan():
         return render_template('index.html', error_message=str(e))
 
 # Main block to run the Flask app
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
