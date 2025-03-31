@@ -2,12 +2,8 @@ import socket
 import re
 from flask import Flask, render_template, request
 from concurrent.futures import ThreadPoolExecutor
-from flask_frozen import Freezer
 
 app = Flask(__name__)
-freezer = Freezer(app)
-
-
 
 # Function to validate input (check if it's an IP or URL)
 def validate_input(input_data):
@@ -75,8 +71,5 @@ def start_scan():
         return render_template('index.html', error_message=str(e))
 
 # Main block to run the Flask app
-
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)  # Allow external access
-
