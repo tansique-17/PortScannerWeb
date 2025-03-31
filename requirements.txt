@@ -1,5 +1,2 @@
 Flask
-Flask-Freezer
-Flask-SQLAlchemy
-requests
 gunicorn
